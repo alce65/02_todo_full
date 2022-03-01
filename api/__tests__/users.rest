@@ -1,0 +1,21 @@
+POST http://localhost:3600/users
+content-type: application/json
+
+{
+  "name": "Pepe",
+  "passwd": "12345"
+}
+
+###
+
+POST http://localhost:3600/users
+content-type: application/json
+
+{
+  "name": "Elena",
+  "passwd": "12345"
+}
+
+###
+
+GET http://localhost:3600/users

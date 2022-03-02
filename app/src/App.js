@@ -12,7 +12,10 @@ function App() {
     <div className="App">
       <header className="App-header">
         <header>
-          <h1>ToDo List</h1>
+          <h1>
+            ToDo List
+            {user.isLogged && <span> de {user.userName}</span>}
+          </h1>
           <UserButtons />
         </header>
 

@@ -1,19 +1,17 @@
-import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { Login } from "./login.js";
+import * as actions from "../../redux/user/action-creators";
+
 export function UserButtons() {
   const user = useSelector((state) => state.user);
+  const dispatch = useDispatch();
   const [showLogin, setShowLogin] = useState(false);
-
-  useEffect(() => {
-    setShowLogin(!user.isLogged);
-  }, [user]);
 
   const handleLogin = () => {
     if (user.isLogged) {
-      console.log("LogOut");
+      dispatch(actions.logout());
     } else {
-      console.log("Login");
       setShowLogin(true);
     }
   };
@@ -34,7 +32,7 @@ export function UserButtons() {
         <button onClick={handleRegistration}>Registration</button>
       )}
 
-      {showLogin && <Login />}
+      {showLogin && <Login setShowLogin={setShowLogin} />}
     </div>
   );
 }

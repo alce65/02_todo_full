@@ -1,15 +1,16 @@
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { removeTask, updateTask } from "../../redux/tasks/action-creators";
 
 export function Task({ task }) {
+  const user = useSelector((state) => state.user);
   const dispatch = useDispatch();
 
   const deleteTask = (task) => {
-    dispatch(removeTask(task));
+    dispatch(removeTask(task, user.token));
   };
   const toggleTask = (task) => {
-    dispatch(updateTask(task));
+    dispatch(updateTask(task, user.token));
   };
 
   function handleClick() {
@@ -27,11 +28,11 @@ export function Task({ task }) {
         checked={task.isCompleted}
         onChange={handleChange}
       />
-      <Link to={`/detail/${task.id}`}>
+      <Link to={`/detail/${task._id}`}>
         <span className={task.isCompleted ? "task-completed" : ""}>
-          {task.name}
+          {task.title}
         </span>{" "}
-        -<span>{task.responsible}</span>
+        -<span>{task.responsible.name}</span>
       </Link>
 
       <div

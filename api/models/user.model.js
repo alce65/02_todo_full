@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-export function userCreator(collection = 'users') {
+export function userCreator(modelName = 'User') {
     const userSchema = new mongoose.Schema({
         name: { type: String, required: true, unique: true },
         passwd: { type: String, required: true },
@@ -20,10 +20,10 @@ export function userCreator(collection = 'users') {
     });
 
     let User;
-    if (mongoose.default.models[collection]) {
-        User = mongoose.model(collection);
+    if (mongoose.default.models[modelName]) {
+        User = mongoose.model(modelName);
     } else {
-        User = mongoose.model(collection, userSchema);
+        User = mongoose.model(modelName, userSchema);
     }
     return User;
 }

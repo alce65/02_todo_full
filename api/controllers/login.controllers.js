@@ -1,37 +1,35 @@
 import { createToken } from '../services/auth.js';
 import bcrypt from 'bcryptjs';
+import { User } from '../index.js';
 
-const USERS = [
+/* const USERS = [
     { name: 'Pepe', passwd: bcrypt.hashSync('1234') },
     { name: 'Elene', passwd: bcrypt.hashSync('4321') },
-];
+]; */
 
-export const login = (req, resp, next) => {
+export const login = async (req, resp, next) => {
     const user = req.body;
-
+    const loginError = new Error('user or password invalid');
+    loginError.status = 401;
     if (!user.name || !user.passwd) {
-        next(new Error('user or password invalid'));
+        next(loginError);
     } else {
-        // TODO comprobar usuario
-
-        if (
-            !USERS.some(
-                (item) =>
-                    item.name === user.name &&
-                    bcrypt.compareSync(user.passwd, item.passwd)
-            )
-        ) {
-            next(new Error('user or password invalid'));
+        const userFound = await User.findOne({
+            name: user.name,
+        });
+        if (!userFound) {
+            next(loginError);
+        } else if (!bcrypt.compareSync(user.passwd, userFound.passwd)) {
+            next(loginError);
         } else {
-            const id = parseInt(Math.random() * 10000);
             const token = createToken({
-                name: user.name,
-                id,
+                name: userFound.name,
+                id: userFound.id,
             });
             resp.json({
                 token,
-                userName: user.name,
-                id,
+                userName: userFound.name,
+                id: userFound.id,
             });
         }
     }

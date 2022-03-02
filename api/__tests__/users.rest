@@ -1,4 +1,4 @@
-POST http://localhost:3600/users
+POST http://localhost:4500/users
 content-type: application/json
 
 {
@@ -8,7 +8,7 @@ content-type: application/json
 
 ###
 
-POST http://localhost:3600/users
+POST http://localhost:4500/users
 content-type: application/json
 
 {
@@ -18,4 +18,4 @@ content-type: application/json
 
 ###
 
-GET http://localhost:3600/users
+GET http://localhost:4500/users

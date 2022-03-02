@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-export function taskCreator(collection = 'tasks') {
+export function taskCreator(modelName = 'Task') {
     const taskSchema = new mongoose.Schema({
         title: { type: String, required: true, unique: true },
         responsible: {
@@ -17,10 +17,10 @@ export function taskCreator(collection = 'tasks') {
     });
 
     let Task;
-    if (mongoose.default.models[collection]) {
-        Task = mongoose.model(collection);
+    if (mongoose.default.models[modelName]) {
+        Task = mongoose.model(modelName);
     } else {
-        Task = mongoose.model(collection, taskSchema);
+        Task = mongoose.model(modelName, taskSchema);
     }
     return Task;
 }

@@ -1,17 +1,24 @@
 import React from "react";
+import { useSelector } from "react-redux";
 import logo from "./logo.svg";
 import { Counter } from "./components/counter";
 import "./App.css";
 import { ToDo } from "./components/todo/todo";
+import { UserButtons } from "./components/user/user-buttons";
 
 function App() {
+  const user = useSelector((state) => state.user);
   return (
     <div className="App">
       <header className="App-header">
-        <h1>ToDo List</h1>
+        <header>
+          <h1>ToDo List</h1>
+          <UserButtons />
+        </header>
+
         <img src={logo} className="App-logo" alt="logo" />
         <Counter />
-        <ToDo />
+        {user.isLogged && <ToDo />}
       </header>
     </div>
   );

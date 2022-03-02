@@ -4,7 +4,9 @@ import { User } from '../index.js';
 
 export const getAllUsers = async (req, res, next) => {
     try {
-        const resp = await User.find({}).populate('tasks');
+        const resp = await User.find({}).populate('tasks', {
+            responsible: 0,
+        });
         res.json(resp);
     } catch (err) {
         next(err);

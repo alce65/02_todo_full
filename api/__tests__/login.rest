@@ -1,7 +1,37 @@
-POST http://localhost:3600/login
+POST http://localhost:4500/login
+content-type: application/json
+
+{
+  "name": "pepe",
+  "passwd": "12345"
+}
+
+####
+
+POST http://localhost:4500/login
 content-type: application/json
 
 {
   "name": "Pepe",
-  "passwd": "12345"
+  "passwd": "123"
+}
+
+####
+
+POST http://localhost:4500/login
+content-type: application/json
+
+{
+  "name": "Juanito",
+  "passwd": "123"
+}
+
+####
+
+POST http://localhost:4500/login
+content-type: application/json
+
+{
+  "name": "Juanito",
+  "passwd": ""
 }

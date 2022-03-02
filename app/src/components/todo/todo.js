@@ -4,16 +4,16 @@ import { Task } from "./task";
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect } from "react";
 import { loadTasks } from "../../redux/tasks/action-creators";
-import { TASKS } from "../../models/tasks.data";
 
 export function ToDo() {
   const tasks = useSelector((state) => state.tasks);
+  const user = useSelector((state) => state.user);
   console.log({ tasks });
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(loadTasks());
-  }, [dispatch]);
+    dispatch(loadTasks(user.token));
+  }, [dispatch, user.token]);
 
   return (
     <>
@@ -23,7 +23,7 @@ export function ToDo() {
           <h2>Lista de tareas</h2>
           <ul className="task-list">
             {tasks.map((task) => (
-              <Task task={task} key={task.id} />
+              <Task task={task} key={task._id} />
             ))}
           </ul>
         </>

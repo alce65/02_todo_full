@@ -1,9 +1,9 @@
 import { actionTypes } from "./action-types";
 import * as api from "../../services/api";
 
-export const loadTasks = () => {
+export const loadTasks = (token) => {
   return (dispatch) => {
-    api.getAll().then((resp) => {
+    api.getAll(token).then((resp) => {
       dispatch({
         type: actionTypes.loadTasks,
         payload: resp.data,
@@ -23,10 +23,11 @@ export const createTask = (task) => {
   };
 };
 
-export const removeTask = (task) => {
+export const removeTask = (task, token) => {
   return (dispatch) => {
-    api.remove(task.id).then((resp) => {
-      if (resp.statusText.toLowerCase() === "ok") {
+    api.remove(task._id, token).then((resp) => {
+      console.log(task);
+      if (resp.status === 202) {
         dispatch({
           type: actionTypes.removeTask,
           payload: task,
@@ -36,9 +37,9 @@ export const removeTask = (task) => {
   };
 };
 
-export const updateTask = (task) => {
+export const updateTask = (task, token) => {
   return (dispatch) => {
-    api.update(task).then((resp) => {
+    api.update(task, token).then((resp) => {
       dispatch({
         type: actionTypes.updateTask,
         payload: resp.data,

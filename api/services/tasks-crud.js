@@ -5,7 +5,9 @@ export async function getAllTasks(Task) {
     const cursor = booksCollection.find();
     const result = await cursor.toArray();
     mongoClient.close(); */
-    return await Task.find({}).populate('responsible');
+    return await Task.find({}).populate('responsible', {
+        tasks: 0,
+    });
 }
 
 export async function getTask(id, Task) {
@@ -13,7 +15,9 @@ export async function getTask(id, Task) {
     const { booksCollection, mongoClient } = await booksConnect();
     const result = await booksCollection.findOne({ _id: dbId });
     mongoClient.close(); */
-    return await Task.findById(id).populate('responsible');
+    return await Task.findById(id).populate('responsible', {
+        tasks: 0,
+    });
 }
 
 export async function insertTask(body, Task) {

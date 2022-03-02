@@ -2,8 +2,10 @@ import axios from "axios";
 
 const TASKS_API = "http://localhost:4500/tasks/";
 
-export function getAll() {
-  return axios.get(TASKS_API);
+export function getAll(token) {
+  return axios.get(TASKS_API, {
+    headers: { authorization: "Bearer " + token },
+  });
   // return fetch(TASKS_API).then(resp => resp.json())
 }
 export function get(id) {
@@ -20,9 +22,13 @@ export function set(task) {
         })
     }) */
 }
-export function update(task) {
-  return axios.patch(TASKS_API + task.id, task);
+export function update(task, token) {
+  return axios.patch(TASKS_API + task._id, task, {
+    headers: { authorization: "Bearer " + token },
+  });
 }
-export function remove(id) {
-  return axios.delete(TASKS_API + id);
+export function remove(id, token) {
+  return axios.delete(TASKS_API + id, {
+    headers: { authorization: "Bearer " + token },
+  });
 }

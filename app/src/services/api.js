@@ -13,6 +13,7 @@ export function get(id) {
   // return fetch(TASKS_API+id).then(resp => resp.json())
 }
 export function set(task) {
+  console.log({ task });
   return axios.post(TASKS_API, task);
   /* return fetch(TASKS_API, {
         method: 'POST',

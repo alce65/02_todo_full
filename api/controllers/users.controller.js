@@ -1,6 +1,7 @@
 import bcrypt from 'bcryptjs';
-// import { createToken } from '../services/auth.js';
+import { createToken } from '../services/auth.js';
 import { User } from '../index.js';
+import { createError } from '../services/errors.js';
 
 export const getAllUsers = async (req, res, next) => {
     try {
@@ -9,14 +10,26 @@ export const getAllUsers = async (req, res, next) => {
         });
         res.json(resp);
     } catch (err) {
-        next(err);
+        next(createError(err, 404));
     }
 };
 
-export const insertUser = async (req, resp) => {
-    const encryptedPasswd = bcrypt.hashSync(req.body.passwd);
-    const userData = { ...req.body, passwd: encryptedPasswd };
-    const newUser = new User(userData);
-    const result = await newUser.save();
-    resp.json(result);
+export const insertUser = async (req, resp, next) => {
+    try {
+        const encryptedPasswd = bcrypt.hashSync(req.body.passwd);
+        const userData = { ...req.body, passwd: encryptedPasswd };
+        const newUser = new User(userData);
+        const result = await newUser.save();
+        const token = createToken({
+            name: result.name,
+            id: result.id,
+        });
+        resp.json({
+            token,
+            userName: result.name,
+            id: result.id,
+        });
+    } catch (error) {
+        next(createError(error));
+    }
 };

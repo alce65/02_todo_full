@@ -31,7 +31,11 @@ export async function insertTask(body, Task) {
     if (!user) {
         return null;
     }
-    const savedTask = await Task.create(body);
+    const tempTask = await Task.create(body);
+    const savedTask = await Task.findById(tempTask.id).populate('responsible', {
+        tasks: 0,
+    });
+
     // const result = await newTask.save(); incluido en create
     user.tasks = [...user.tasks, savedTask.id];
     user.save();
@@ -48,7 +52,11 @@ export async function updateTask(id, partialTask, Task) {
         }
     );
     mongoClient.close(); */
-    return await Task.findByIdAndUpdate(id, partialTask, { new: true });
+    return await Task.findByIdAndUpdate(id, partialTask, {
+        new: true,
+    }).populate('responsible', {
+        tasks: 0,
+    });
 }
 
 export async function deleteTask(id, Task) {
@@ -56,5 +64,7 @@ export async function deleteTask(id, Task) {
     const { booksCollection, mongoClient } = await booksConnect();
     const result = await booksCollection.findOneAndDelete({ _id: dbId });
     mongoClient.close(); */
-    return await Task.findByIdAndDelete(id);
+    return await Task.findByIdAndDelete(id).populate('responsible', {
+        tasks: 0,
+    });
 }

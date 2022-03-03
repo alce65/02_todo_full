@@ -49,3 +49,7 @@ content-type: application/json
 
 ###
 DELETE http://localhost:4500/tasks/621a1603386d75fe79fbb93b
+
+###
+DELETE http://localhost:4500/tasks/62
+authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiUGVwZSIsImlkIjoiNjIxZTE0ZDA5N2Y0NTQzYjQxYTZjZmQ2IiwiaWF0IjoxNjQ2MzAxMDY5fQ.BxOjoXNzUwoLRM32A605nZrIubTdELX1pTosB-rGy-A

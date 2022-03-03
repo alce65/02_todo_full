@@ -1,12 +1,13 @@
 import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Login } from "./login.js";
+import { UserForm } from "./user-form.js";
 import * as actions from "../../redux/user/action-creators";
 
 export function UserButtons() {
   const user = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const [showLogin, setShowLogin] = useState(false);
+  const [showRegistration, setShowRegistration] = useState(false);
 
   const handleLogin = () => {
     if (user.isLogged) {
@@ -17,7 +18,7 @@ export function UserButtons() {
   };
 
   const handleRegistration = () => {
-    console.log("Registration");
+    setShowRegistration(true);
   };
 
   return (
@@ -27,12 +28,13 @@ export function UserButtons() {
           {user.isLogged ? "Logout" : "Login"}
         </button>
       )}
-
       {!showLogin && !user.isLogged && (
         <button onClick={handleRegistration}>Registration</button>
       )}
-
-      {showLogin && <Login setShowLogin={setShowLogin} />}
+      {showLogin && <UserForm setShowForm={setShowLogin} mode="login" />}
+      {showRegistration && (
+        <UserForm setShowForm={setShowRegistration} mode="registration" />
+      )}
     </div>
   );
 }

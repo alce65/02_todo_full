@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { login } from "../../services/user";
+import { login, register } from "../../services/user";
 import * as actions from "../../redux/user/action-creators";
 
-export function Login({ setShowLogin }) {
+export function UserForm({ setShowForm, mode }) {
   const [user, setUser] = useState({ name: "", passwd: "" });
   const dispatch = useDispatch();
 
@@ -13,24 +13,31 @@ export function Login({ setShowLogin }) {
 
   const handleSubmit = async (ev) => {
     ev.preventDefault();
+
     try {
-      const result = await login(user);
-      console.log(result.data);
+      let result;
+      if (mode.toLowerCase() === "login") {
+        result = await login(user);
+      } else {
+        result = await register(user);
+      }
       dispatch(actions.login({ ...result.data, isLogged: true }));
-      setShowLogin(false);
+      setShowForm(false);
     } catch (error) {
       console.log(error);
     }
   };
 
   const handleCancel = () => {
-    setShowLogin(false);
+    setShowForm(false);
   };
 
   return (
     <form>
       <fieldset>
-        <legend>Login</legend>
+        <legend>
+          {mode.toLowerCase() === "login" ? "Login" : "Registration"}
+        </legend>
         <input
           type="text"
           name="name"
@@ -47,7 +54,7 @@ export function Login({ setShowLogin }) {
         ></input>
       </fieldset>
       <button type="submit" onClick={handleSubmit}>
-        Login
+        {mode.toLowerCase() === "login" ? "Login" : "Registration"}
       </button>
       <button type="reset" onClick={handleCancel}>
         Cancel

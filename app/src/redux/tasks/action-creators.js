@@ -15,6 +15,7 @@ export const loadTasks = (token) => {
 export const createTask = (task) => {
   return (dispatch) => {
     api.set(task).then((resp) => {
+      console.log("resp", resp.data);
       dispatch({
         type: actionTypes.createTask,
         payload: resp.data,

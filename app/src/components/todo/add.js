@@ -1,10 +1,11 @@
 /* eslint-disable react/no-typos */
 import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Task } from "../../models/task";
 import { createTask } from "../../redux/tasks/action-creators";
 
 export function Add() {
+  const user = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const addTask = (newTask) => {
     dispatch(createTask(newTask));
@@ -14,22 +15,12 @@ export function Add() {
   const handleSubmit = (ev) => {
     ev.preventDefault();
     console.log("Added task", newTask);
-    addTask(newTask);
+    addTask({ ...newTask, responsible: { _id: user.id, name: user.userName } });
     setNewTask(new Task());
   };
 
   const handleChange = (ev) => {
-    /* switch (ev.target.name) {
-            case 'name':
-                setNewTask({ ...newTask, name: ev.target.value });
-                break;
-            case 'responsible':
-                setNewTask({ ...newTask, responsible: ev.target.value });
-                break;
-            default:
-        } */
     setNewTask({ ...newTask, [ev.target.name]: ev.target.value });
-    // setNewTask(newTask[ev.target.name] = ev.target.value);
   };
 
   return (
@@ -38,9 +29,9 @@ export function Add() {
       <form onSubmit={handleSubmit}>
         <input
           type="text"
-          name="name"
+          name="title"
           placeholder="Nombre de la tarea"
-          value={newTask.name}
+          value={newTask.title}
           onChange={handleChange}
           required
         />
@@ -48,8 +39,8 @@ export function Add() {
           type="text"
           name="responsible"
           placeholder="Responsable de la de la tarea"
-          value={newTask.responsible}
-          onChange={handleChange}
+          value={user.userName}
+          readOnly
         />
         <button type="submit">Add</button>
       </form>

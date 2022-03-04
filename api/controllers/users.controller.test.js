@@ -1,13 +1,9 @@
 import * as controller from './users.controller.js';
 // import bcrypt from 'bcryptjs';
 // import { createToken } from '../services/auth.js';
-import { User } from '../index.js';
+import { User } from '../models/user.model.js';
 
-jest.mock('../index.js');
-// jest.mock('../index.js', () => ({
-//     ...jest.requireActual('../index.js'),
-//     User: jest.fn(),
-// }));
+jest.mock('../models/user.model.js');
 
 describe('Given the tasks controller', () => {
     let req;

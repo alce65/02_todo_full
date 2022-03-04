@@ -1,6 +1,6 @@
 import { createToken } from '../services/auth.js';
 import bcrypt from 'bcryptjs';
-import { User } from '../index.js';
+import { User } from '../models/user.model.js';
 
 /* const USERS = [
     { name: 'Pepe', passwd: bcrypt.hashSync('1234') },

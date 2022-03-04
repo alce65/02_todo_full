@@ -27,3 +27,5 @@ export function userCreator(modelName = 'User') {
     }
     return User;
 }
+
+export const User = userCreator();

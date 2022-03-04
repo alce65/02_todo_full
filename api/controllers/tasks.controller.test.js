@@ -1,10 +1,11 @@
 // import mongoose from 'mongoose';
 import * as controller from './tasks.controller.js';
-import '../services/db.js';
+import '../models/task.model.js';
 import * as crud from '../services/tasks-crud.js';
-jest.mock('../services/db.js', () => {
+
+jest.mock('../models/task.model.js', () => {
     return {
-        tasksConnect: jest.fn().mockResolvedValue({}),
+        taskCreator: jest.fn().mockResolvedValue({}),
     };
 });
 jest.mock('../services/tasks-crud.js');

@@ -1,28 +1,35 @@
 import { Error, mongo } from 'mongoose';
-import { installTasks, tasksConnect } from './db.js';
+import { mongoConnect, mongoDisconnect, installTasks } from './db.js';
+import { taskCreator } from '../models/task.model.js';
 import data from './task.data.js';
 import * as tasksSrv from './tasks-crud.js';
+import { userCreator } from '../models/user.model.js';
 
 describe('given a connection with a MongoDB', () => {
     describe('when a collection is defined and populated', () => {
-        let connection;
         let Task;
         let initialCount;
         let first_id;
         let invalid_id;
-        const collection = 'testingTasks';
+        let mockUsers;
+        const collection = 'Task';
         beforeAll(async () => {
-            const { result: mockCollection } = await installTasks(
-                data.tasks,
-                collection
-            );
+            await mongoConnect();
+            const User = userCreator();
+            mockUsers = await User.find({});
+            const mockTasks = data.tasks.map((item, i) => {
+                const index = i <= 1 ? i : 0;
+                return { ...item, responsible: mockUsers[index]._id };
+            });
+            const { result: mockCollection } = await installTasks(mockTasks);
+            // const mockCollection = await Task.find({});
             initialCount = mockCollection.length;
             first_id = mockCollection[0].id;
             invalid_id = '621a1603366d76fe79fbb93a';
-            ({ connection, Task } = await tasksConnect(collection));
+            Task = taskCreator();
         });
-        afterAll(() => {
-            connection.disconnect();
+        afterAll(async () => {
+            await mongoDisconnect();
         });
         test('should connect to the collection', async () => {
             expect(Task).toBeTruthy();
@@ -58,7 +65,7 @@ describe('given a connection with a MongoDB', () => {
             test('should add a valid item', async () => {
                 const newTask = {
                     title: 'Desplegar la Home',
-                    responsible: 'Julia',
+                    responsible: mockUsers[0]._id,
                     isCompleted: false,
                 };
                 const result = await tasksSrv.insertTask(newTask, Task);
@@ -67,7 +74,7 @@ describe('given a connection with a MongoDB', () => {
             });
             test('should not add a invalid item (required missing)', async () => {
                 const newTask = {
-                    responsible: 'Julia',
+                    responsible: mockUsers[0]._id,
                     isCompleted: false,
                 };
                 await expect(
@@ -77,7 +84,7 @@ describe('given a connection with a MongoDB', () => {
             test('should not add a invalid item (not unity when required )', async () => {
                 const newTask = {
                     title: 'Desplegar la Home',
-                    responsible: 'Julia',
+                    responsible: mockUsers[0]._id,
                     isCompleted: false,
                 };
                 await expect(

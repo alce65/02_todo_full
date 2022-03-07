@@ -1,26 +1,27 @@
-import { render } from "../../redux/test.utils";
-import { screen } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
+import { render } from '../../redux/test.utils';
+import { screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 
-import { Add } from "./add";
+import { Add } from './add';
 
-describe("Task Component", () => {
-  let preloadState;
+describe('Task Component', () => {
+    let preloadedState;
 
-  beforeEach(() => {
-    preloadState = {
-      tasks: [
-        {
-          id: 1,
-          name: "First ToDo",
-          responsible: "Pepe",
-        },
-      ],
-    };
-  });
-  test("should be rendered", () => {
-    render(<Add />);
-    expect(screen.getByPlaceholderText(/Nombre/i));
-    expect(screen.getByPlaceholderText(/Responsable/i));
-  });
+    beforeEach(() => {
+        preloadedState = {
+            tasks: [
+                {
+                    id: 1,
+                    name: 'First ToDo',
+                    responsible: 'Pepe',
+                },
+            ],
+            user: { userName: 'Pepe' },
+        };
+    });
+    test('should be rendered', () => {
+        render(<Add />, { preloadedState });
+        expect(screen.getByPlaceholderText(/Nombre/i));
+        expect(screen.getByPlaceholderText(/Responsable/i));
+    });
 });

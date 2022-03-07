@@ -1,3 +1,5 @@
+import bcrypt from 'bcryptjs';
+
 export default {
     tasks: [
         {
@@ -17,7 +19,7 @@ export default {
         },
     ],
     users: [
-        { name: 'Pepe', passwd: '1234', tasks: [] },
-        { name: 'Elena', passwd: '1234', tasks: [] },
+        { name: 'Pepe', passwd: bcrypt.hashSync('1234'), tasks: [] },
+        { name: 'Elena', passwd: bcrypt.hashSync('1234'), tasks: [] },
     ],
 };

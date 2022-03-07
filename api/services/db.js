@@ -7,12 +7,10 @@ import { userCreator } from '../models/user.model.js';
 export async function mongoConnect() {
     const user = process.env.DBUSER;
     const password = process.env.DBPASSWD;
-    let dbName;
-    if (process.env.NODE_ENV === 'test') {
-        dbName = process.env.TESTDBNAME;
-    } else {
-        dbName = process.env.DBNAME;
-    }
+    const dbName =
+        process.env.NODE_ENV === 'test'
+            ? process.env.TESTDBNAME
+            : process.env.DBNAME;
     console.log('Connecting to', dbName);
     const uri = `mongodb+srv://${user}:${password}@cluster0.dj9ya.mongodb.net/${dbName}?retryWrites=true&w=majority`;
     return await mongoose.connect(uri);

@@ -1,7 +1,7 @@
-import { Error, mongo } from 'mongoose';
+import { Error, mongo, Types } from 'mongoose';
 import { mongoConnect, mongoDisconnect, installTasks } from './db.js';
 import { taskCreator } from '../models/task.model.js';
-import data from './task.data.js';
+import data from '../data/task.data.js';
 import * as tasksSrv from './tasks-crud.js';
 import { userCreator } from '../models/user.model.js';
 
@@ -72,6 +72,15 @@ describe('given a connection with a MongoDB', () => {
                 expect(result).toHaveProperty('_id');
                 expect(result.title).toBe('Desplegar la Home');
             });
+
+            test('should not add a a taks for empty user', async () => {
+                const result = await tasksSrv.insertTask(
+                    { responsible: new Types.ObjectId(invalid_id) },
+                    Task
+                );
+                expect(result).toBe(null);
+            });
+
             test('should not add a invalid item (required missing)', async () => {
                 const newTask = {
                     responsible: mockUsers[0]._id,

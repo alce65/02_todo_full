@@ -8,6 +8,11 @@ export const getAllUsers = async (req, res, next) => {
         const resp = await User.find({}).populate('tasks', {
             responsible: 0,
         });
+        if (resp === null) {
+            const error = new Error('No data');
+            error.status = 204;
+            next(error);
+        }
         res.json(resp);
     } catch (err) {
         next(createError(err, 404));
@@ -18,8 +23,9 @@ export const insertUser = async (req, resp, next) => {
     try {
         const encryptedPasswd = bcrypt.hashSync(req.body.passwd);
         const userData = { ...req.body, passwd: encryptedPasswd };
-        const newUser = new User(userData);
-        const result = await newUser.save();
+        // const newUser = new User(userData);
+        // const result = await newUser.save();
+        const result = await User.create(userData);
         const token = createToken({
             name: result.name,
             id: result.id,

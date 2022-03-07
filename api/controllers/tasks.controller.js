@@ -33,6 +33,9 @@ export const getTask = (req, res, next) => {
 export const insertTask = (req, res, next) => {
     crud.insertTask(req.body, Task)
         .then((resp) => {
+            if (resp === null) {
+                res.status(406);
+            }
             res.json(resp);
         })
         .catch((err) => next(createError(err)));

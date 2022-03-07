@@ -28,6 +28,7 @@ export async function insertTask(body, Task) {
     // body = {title, responsible, isCompleted}
     const User = userCreator();
     const user = await User.findById(body.responsible);
+    console.log({ user });
     if (!user) {
         return null;
     }

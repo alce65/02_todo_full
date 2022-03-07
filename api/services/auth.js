@@ -2,6 +2,12 @@ import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 dotenv.config();
 
+/**
+ * @description Función que devuelve un JWS Token
+ * @param {string} user
+ * @returns {string} token
+ * @author Alejandro Cerezo Lasne
+ */
 export function createToken(user) {
     const tokenPayload = {
         name: user.name,
@@ -11,6 +17,11 @@ export function createToken(user) {
     return jwt.sign(tokenPayload, secret);
 }
 
+/**
+ *
+ * @param {string} token
+ * @returns
+ */
 export function verifyToken(token) {
     const secret = process.env.SECRET;
     try {

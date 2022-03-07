@@ -1,5 +1,5 @@
 import { verifyToken } from '../services/auth.js';
-import { Task } from '../index.js';
+import { Task } from '../models/task.model.js';
 
 export const loginRequired = (req, res, next) => {
     const authorization = req.get('authorization');
@@ -27,7 +27,7 @@ export const userRequired = async (req, res, next) => {
     const userId = req.tokenPayload.id;
     const task = await Task.findById(taskId);
     console.log(task, userId);
-    if (task.responsible.toString() === userId) {
+    if (task?.responsible.toString() === userId) {
         next();
     } else {
         const userError = new Error('not authorized user');

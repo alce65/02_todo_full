@@ -24,3 +24,5 @@ export function taskCreator(modelName = 'Task') {
     }
     return Task;
 }
+
+export const Task = taskCreator();

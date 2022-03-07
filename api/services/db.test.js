@@ -6,7 +6,7 @@ import {
     installTasks,
     installUsers,
 } from './db.js';
-import data from './task.data.js';
+import data from '../data/task.data.js';
 
 describe('given a connection with MongoDB', () => {
     afterEach(async () => {

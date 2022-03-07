@@ -21,6 +21,18 @@ POST http://localhost:4500/tasks
 content-type: application/json
 
 {
+    "title": "Otra Tarea adicional",
+    "responsible": "",
+    "isCompleted": false
+}
+
+
+###
+
+POST http://localhost:4500/tasks
+content-type: application/json
+
+{
   "title": "Tarea principal",
   "responsible": "621e151897f4543b41a6cfd8",
   "isCompleted": false

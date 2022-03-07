@@ -9,6 +9,7 @@ import loginRouter from './routes/login.routes.js';
 import userRouter from './routes/user.routes.js';
 import { userCreator } from './models/user.model.js';
 import { taskCreator } from './models/task.model.js';
+import { handleListen } from './services/helpers.js';
 
 dotenv.config();
 export const app = express();
@@ -33,5 +34,5 @@ app.use((err, req, resp, next) => {
 });
 
 export const server = app.listen(port, () => {
-    console.log(`Server listening in http://localhost:${port}`);
+    handleListen(port);
 });

@@ -61,6 +61,18 @@ describe('Given the tasks controller', () => {
                 expect(res.json).toHaveBeenCalled();
             });
         });
+        describe('And add task is not possible (promise is resolved)', () => {
+            beforeEach(() => {
+                crud.insertTask.mockRejectedValue(
+                    new Error('Add task not possible')
+                );
+            });
+            test('Then call next', async () => {
+                await controller.insertTask(req, res, next);
+                expect(res.json).not.toHaveBeenCalled();
+                // expect(next).toHaveBeenCalled();
+            });
+        });
     });
 
     describe('When  getTaskById is triggered', () => {
@@ -100,6 +112,18 @@ describe('Given the tasks controller', () => {
                 expect(res.json).toHaveBeenCalled();
             });
         });
+        describe('And update task is not possible (promise is resolved)', () => {
+            beforeEach(() => {
+                crud.updateTask.mockRejectedValue(
+                    new Error('Add task not possible')
+                );
+            });
+            test('Then call next', async () => {
+                await controller.updateTask(req, res, next);
+                expect(res.json).not.toHaveBeenCalled();
+                // expect(next).toHaveBeenCalled();
+            });
+        });
     });
 
     describe('When deleteTask is triggered', () => {
@@ -112,6 +136,29 @@ describe('Given the tasks controller', () => {
                 await controller.deleteTask(req, res, next);
                 expect(res.status).toHaveBeenCalledWith(202);
                 expect(res.json).toHaveBeenCalled();
+            });
+        });
+        describe('And id not exists', () => {
+            beforeEach(() => {
+                // req.params.id = '619516dd75bcdf9b77e6690c';
+                crud.deleteTask.mockResolvedValue(null);
+            });
+            test('Then call json', async () => {
+                await controller.deleteTask(req, res, next);
+                expect(res.status).toHaveBeenCalledWith(204);
+                expect(res.json).toHaveBeenCalled();
+            });
+        });
+        describe('And there are a error (promise rejected)', () => {
+            beforeEach(() => {
+                crud.deleteTask.mockRejectedValue(
+                    new Error('Error deleting a task')
+                );
+            });
+            test('Then call next', async () => {
+                await controller.deleteTask(req, res, next);
+                expect(res.json).not.toHaveBeenCalled();
+                // expect(next).toHaveBeenCalled();
             });
         });
     });
